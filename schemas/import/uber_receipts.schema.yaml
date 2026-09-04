@@ -1,0 +1,114 @@
+version: 7
+version_hash: rjWyaaj9BZf+ynrgV5ukNEXj8145EY1lqz5z91FxND8=
+engine_version: 11
+name: uber_receipts
+tables:
+  _dlt_version:
+    columns:
+      version:
+        data_type: bigint
+        nullable: false
+      engine_version:
+        data_type: bigint
+        nullable: false
+      inserted_at:
+        data_type: timestamp
+        nullable: false
+      schema_name:
+        data_type: text
+        nullable: false
+      version_hash:
+        data_type: text
+        nullable: false
+      schema:
+        data_type: text
+        nullable: false
+    write_disposition: skip
+    resource: _dlt_version
+    description: Created by DLT. Tracks schema updates
+  _dlt_loads:
+    columns:
+      load_id:
+        data_type: text
+        nullable: false
+        precision: 64
+      schema_name:
+        data_type: text
+        nullable: true
+      status:
+        data_type: bigint
+        nullable: false
+      inserted_at:
+        data_type: timestamp
+        nullable: false
+      schema_version_hash:
+        data_type: text
+        nullable: true
+    write_disposition: skip
+    resource: _dlt_loads
+    description: Created by DLT. Tracks completed loads
+  _dlt_pipeline_state:
+    columns:
+      version:
+        data_type: bigint
+        nullable: false
+      engine_version:
+        data_type: bigint
+        nullable: false
+      pipeline_name:
+        data_type: text
+        nullable: false
+      state:
+        data_type: text
+        nullable: false
+      created_at:
+        data_type: timestamp
+        nullable: false
+      version_hash:
+        data_type: text
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+        precision: 64
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+    write_disposition: append
+    file_format: preferred
+    resource: _dlt_pipeline_state
+settings:
+  detections:
+  - iso_timestamp
+  default_hints:
+    not_null:
+    - _dlt_id
+    - _dlt_root_id
+    - _dlt_parent_id
+    - _dlt_list_idx
+    - _dlt_load_id
+    parent_key:
+    - _dlt_parent_id
+    root_key:
+    - _dlt_root_id
+    unique:
+    - _dlt_id
+    row_key:
+    - _dlt_id
+normalizers:
+  names: snake_case
+  json:
+    module: dlt.common.normalizers.json.relational
+    config:
+      propagation:
+        tables: {}
+previous_hashes:
+- UvgYQD5KWhqv/IywvcZbUIKJMZIhYC12Uw2miNFxkBU=
+- rjWyaaj9BZf+ynrgV5ukNEXj8145EY1lqz5z91FxND8=
+- EKHnfIjG7utkeKFzRX+fAWsSAn7FEIAoB5yjbxY9UCQ=
+- 5DVYIvtgO1y8TVgh3oaVjg0triz1xIi/ppr+Ly2xFGM=
+- ihsWkRJP62dVQrRu3BQv+FrNJ+81qeZ4zTUiN4NlqTo=
+- QTIbHRUC6lrw4sEnYRV5QNsbcQsQAYxqHB4CMu7HwTo=
+- 8tzjidoLlTmFDeGUY+q9g1VsXk+igwX2SZ/bjbTLBI0=

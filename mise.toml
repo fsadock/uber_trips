@@ -1,0 +1,9 @@
+[tools]
+python = "3.13"
+
+[env]
+# {{config_root}} = a pasta deste mise.toml, então funciona de qualquer subdir.
+DBT_PROFILES_DIR = "{{config_root}}/dbt"
+UBER_DUCKDB = "{{config_root}}/uber_receipts.duckdb"
+# Carrega UBER_SID/UBER_CSID para rodar o extrator na mão.
+_.file = ".env"

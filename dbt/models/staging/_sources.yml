@@ -1,0 +1,6 @@
+version: 2
+sources:
+  - name: uber
+    schema: uber
+    tables:
+      - name: uber_trips

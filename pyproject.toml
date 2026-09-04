@@ -1,0 +1,24 @@
+[project]
+name = "uber-receipts"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13.9"
+dependencies = [
+    "dagster>=1.13.10",
+    "dagster-dbt>=0.29.21",
+    "dagster-postgres>=0.29.21",
+    "dagster-webserver>=1.13.10",
+    "dbt-duckdb>=1.10.1",
+    "dlt[duckdb,hub]>=1.28.1",
+    "google-api-python-client>=2.197.0",
+    "google-auth-httplib2>=0.4.0",
+    "google-auth-oauthlib>=1.4.0",
+    "gspread>=6.2.1",
+    "gspread-dataframe>=4.0.0",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.15.0",
+]
+
+[tool.dagster]
+module_name = "definitions"

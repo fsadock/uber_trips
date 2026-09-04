@@ -1,0 +1,32 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Segredos: cookies da Uber, OAuth do Gmail, service account do Google Sheets.
+# O padrão antigo era `.json`, que casa só com um arquivo chamado ".json" e
+# portanto nunca ignorou nada.
+.env
+.env.*
+!.env.example
+*.json
+credentials.json
+token.json
+
+# Dados e artefatos locais
+*.duckdb
+*.duckdb.bak
+*.csv
+logs/
+.tmp_dagster_home_*/
+.claude/
+
+# Seeds com endereços pessoais. O .csv.example não casa com este padrão e
+# vai pro repositório; o dbt também o ignora, por não terminar em .csv.
+dbt/seeds/*.csv

@@ -1,0 +1,17 @@
+version: 2
+seeds:
+  - name: trajetos_trabalho
+    description: >
+      Pares de rua que caracterizam deslocamento de trabalho, em minúsculas e
+      sem acento. Veja o .example.csv para o formato.
+    config:
+      column_types:
+        rua_origem: varchar
+        rua_destino: varchar
+        sentido: varchar
+    columns:
+      - name: sentido
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["ida", "volta"]

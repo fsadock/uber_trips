@@ -1,0 +1,30 @@
+version: 2
+models:
+  - name: stg_uber_trips
+    description: >
+      Viagens concluídas, tipadas, com trip_type marcando ida/volta do trabalho
+      (trajeto conhecido em dia útil, sem filtro de horário).
+      Viagens pessoais ficam na tabela com trip_type nulo — a planilha é que filtra.
+    columns:
+      - name: uuid
+        data_tests:
+          - unique
+          - not_null
+      - name: trip_date
+        data_tests:
+          - not_null
+      - name: total_brl
+        data_tests:
+          - not_null
+      - name: distance_km
+        data_tests:
+          - not_null:
+              config:
+                where: "trip_type is not null"
+      - name: trip_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["ida", "volta"]
+              config:
+                where: "trip_type is not null"
