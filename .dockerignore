@@ -1,0 +1,19 @@
+# Secrets and data come in at runtime (docker-compose.yml), never baked into the image
+.env
+.env.*
+*.json
+*.duckdb
+*.duckdb.bak
+*.csv
+data/
+logs/
+
+.git
+.github
+.venv
+__pycache__/
+*.py[oc]
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+.tmp_dagster_home_*/

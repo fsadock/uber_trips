@@ -3,6 +3,7 @@ import subprocess
 from dagster import (
     AssetExecutionContext,
     Config,
+    DefaultScheduleStatus,
     Definitions,
     ScheduleDefinition,
     asset,
@@ -45,7 +46,14 @@ uber_job = define_asset_job("uber_job")
 
 # Uma vez por mês, no dia 1º: as 60 viagens cobrem o mês que acabou de fechar e
 # o merge pelo uuid absorve qualquer sobreposição com a execução anterior.
-monthly_schedule = ScheduleDefinition(job=uber_job, cron_schedule="0 8 1 * *")
+# Ligado por padrão e no fuso de Brasília: sem isso o Dagster sobe com o agendamento parado e conta o
+# cron em UTC.
+monthly_schedule = ScheduleDefinition(
+    job=uber_job,
+    cron_schedule="0 8 1 * *",
+    execution_timezone="America/Sao_Paulo",
+    default_status=DefaultScheduleStatus.RUNNING,
+)
 
 defs = Definitions(
     assets=[raw_uber_trips, dbt_staging, google_sheet],

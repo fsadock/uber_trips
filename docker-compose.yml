@@ -1,0 +1,26 @@
+# docker compose up -d     Dagster UI at http://localhost:3002; the monthly job runs on its own.
+# Needs next to this file: .env (see .env.example), the Google service account JSON and
+# dbt/seeds/trajetos_trabalho.csv (your addresses). The database lives in ./data.
+services:
+  uber:
+    build: .
+    image: ghcr.io/fsadock/uber_trips:latest
+    container_name: uber-dagster
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3002:3002"   # this machine only; other devices reach it through Tailscale Serve
+    env_file: .env
+    environment:
+      TZ: America/Sao_Paulo
+      UBER_DUCKDB: /app/data/uber_receipts.duckdb
+      DESTINATION__DUCKDB__CREDENTIALS: /app/data/uber_receipts.duckdb
+      DBT_PROFILES_DIR: /app/dbt
+      GOOGLE_SERVICE_ACCOUNT: /run/secrets/google-service-account.json
+    volumes:
+      - ./data:/app/data
+      - dagster_home:/opt/dagster
+      - ${GOOGLE_SERVICE_ACCOUNT_FILE:-./google-service-account.json}:/run/secrets/google-service-account.json:ro
+      - ./dbt/seeds/trajetos_trabalho.csv:/app/dbt/seeds/trajetos_trabalho.csv:ro
+
+volumes:
+  dagster_home:
