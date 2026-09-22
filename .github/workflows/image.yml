@@ -1,5 +1,4 @@
-# Builds the Docker image on every push to main and publishes it to GitHub's registry,
-# where the server pulls it: docker compose pull && docker compose up -d
+# On every push to main: builds the Docker image, publishes it to GitHub's registry and updates the VPS.
 name: image
 on:
   push:
@@ -27,3 +26,24 @@ jobs:
             ghcr.io/${{ github.repository }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # Updates the app on the VPS: the runner joins the tailnet as a temporary tag:ci machine (allowed
+  # only to reach the VPS on port 22) and SSHes in with a key that can only run /usr/local/bin/deploy.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+      - name: Update the app on the VPS
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          VPS_HOST_KEY: ${{ secrets.VPS_HOST_KEY }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          echo "vps.hair-karat.ts.net $VPS_HOST_KEY" > ~/.ssh/known_hosts
+          ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes root@vps.hair-karat.ts.net "${{ github.event.repository.name }}"
